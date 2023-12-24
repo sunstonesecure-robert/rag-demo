@@ -233,7 +233,7 @@ def get_page_type(md_file):
     elif "docs" in md_file:
         return "docs"
     elif "doc_source" in md_file:
-        return "aws"
+        return "docs"
     else:
         raise ValueError(
             "process_docusaurus_page only tested against docs or blog page, not {}".format(
