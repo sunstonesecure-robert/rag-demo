@@ -98,6 +98,7 @@ def parse_md_file_headers(markdown_file_path, deployment_url, subdir):
             return END_ESCAPE
 
     page_type = get_page_type(markdown_file_path)
+    print(page_type)
 
     def _construct_url(header):
         def strip_slug(s):
