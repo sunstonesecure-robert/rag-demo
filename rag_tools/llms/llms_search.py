@@ -1,4 +1,5 @@
-import openai
+from openai import OpenAI # following migration guide
+
 from transformers import AutoTokenizer
 import transformers
 import torch
@@ -37,21 +38,22 @@ class ChatGPTWrapper:
         Currently only handles single message sessions.
         """
         self.model_name = model_name
-        openai.api_key = api_key
+        # per migration guide
+        self.client = OpenAI(
+          api_key=api_key
+        )
 
     def sample(self, text, temperature=0.8, max_tokens=100):
         metadata = {"model": self.model_name,
                     "temperature": temperature,
                     "max_tokens": max_tokens}
+        
+        # following migration and API guides
+        completion = self.client.completions.create(model=self.model_name, messages=[
+          {"role": "system", "content": "You are a search engine that replies to query based on context. Answer with "
+                                        "information provided within the context otherwise reply with 'I don't know'"},
+          {"role": "user", "content": text}
+        ],**metadata)
+        print(dict(completion).get('usage'))
 
-        # sample from the openai model
-
-        r = openai.ChatCompletion.create(
-            messages=[
-                {"role": "system", "content": "You are a search engine that replies to query based on context. Answer with "
-                                              "information provided within the context otherwise reply with 'I don't know'"},
-                {"role": "user", "content": text}
-            ],
-            **metadata
-        )
-        return r['choices'][0]["message"]["content"]
+        return completion.choices[0].text
