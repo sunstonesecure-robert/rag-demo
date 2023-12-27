@@ -49,7 +49,7 @@ class ChatGPTWrapper:
                     "max_tokens": max_tokens}
         
         # following migration and API guides
-        completion = self.client.completions.create(model=self.model_name, messages=[
+        completion = self.client.completions.create(messages=[
           {"role": "system", "content": "You are a search engine that replies to query based on context. Answer with "
                                         "information provided within the context otherwise reply with 'I don't know'"},
           {"role": "user", "content": text}
