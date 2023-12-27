@@ -56,4 +56,4 @@ class ChatGPTWrapper:
         ],**metadata)
         print(dict(completion).get('usage'))
 
-        return completion.choices[0].text
+        return completion.choices[0].message.content
